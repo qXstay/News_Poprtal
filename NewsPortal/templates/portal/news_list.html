@@ -1,0 +1,34 @@
+{% extends 'default.html' %}
+{% load censor %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-5">Все новости (Всего: {{ news|length }})</h2>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th scope="col">Заголовок</th>
+                <th scope="col">Дата</th>
+                <th scope="col">Превью</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in news %}
+                <tr>
+                    <!-- Обрезаем заголовок до 20 символов, затем фильтр censor -->
+                    <td>
+                        <a href="/news/{{ post.id }}/">
+                            {{ post.title|slice:":20"|censor }}
+                        </a>
+                    </td>
+                    <td>{{ post.created_at|date:"d.m.Y" }}</td>
+                    <!-- Обрезаем контент до 20 символов, затем фильтр censor -->
+                    <td>{{ post.content|slice:":20"|censor }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
